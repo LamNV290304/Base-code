@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SEP490.Application.Interfaces
+{
+    public interface IRepository
+    {
+        public interface IRepository<T> where T : class
+        {
+            Task<T?> GetAsync(int id, CancellationToken cancellationToken = default);
+            Task AddAsync(T entity, CancellationToken cancellationToken = default);
+            Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
+            Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
+            IQueryable<T> Query();
+        }
+    }
+}
