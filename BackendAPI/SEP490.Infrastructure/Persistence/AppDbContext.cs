@@ -15,6 +15,12 @@ namespace SEP490.Infrastructure.Persistence
 
         public DbSet<User> Users => Set<User>();
 
+        /// <summary>
+        /// Logging config
+        /// !!!WARNING
+        /// </summary>
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

@@ -1,1 +1,68 @@
-# SEP490
+# SEP490 BACKEND:
+Technology: .Net 8.0
+Database: MySQL 8.0.36 Debian
+
+## Code First:
+- Create Migration:
+-> dotnet ef migrations add <NameMigrations> --startup-project ../SEP490.API -o Migrations
+
+- Apply Migration:
+-> dotnet ef database update --startup-project
+
+##### !Focus
+User entity is example, do not remove BaseEntity and Logging package
+
+## Explain Layers:
+- Get appsetting.json from non-git source. See last file to know what must be fill.
+
+# Domain Layer:
+- Contains pure business rules (core business logic).
+
+- Contains Entities: the main domain objects (e.g., User, Product).
+
+- Contains Value Objects: immutable objects that represent a value (e.g., Email, Money).
+
+- Contains Enums and Exceptions related to business logic.
+
+# Application Layer:
+- Contains interfaces for repositories, unit of work, and services (which will be implemented in lower layers).
+
+- Contains Use Cases / Higher-level Business Logic (e.g., CreateOrder, RegisterUser).
+
+- Contains DTOs (Data Transfer Objects) for exchanging data between the API layer and the domain layer.
+
+- Contains CQRS / MediatR handlers and Validators (e.g., FluentValidation).
+
+# Infrastructure Layer:
+- Implements the interfaces defined in the Application layer, such as Repository and Unit of Work.
+
+- Contains DbContext, EF Core, MySQL, and entity mappings (Code-First / Fluent API).
+
+- Contains integrations with external services (HTTP clients, file storage, SMTP, etc.).
+
+- Contains migrations and database configuration.
+
+# API Layer:
+- Receives requests from the client (HTTP, Web).
+
+- Translates the request into a command/query and calls the Application layer.
+
+- Returns data to the client (JSON, XML, etc.).
+
+- Contains Controllers, Middleware, Swagger, and Dependency Injection (DI).
+
+###### appsetting.json
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "AllowedHosts": "*",
+
+    "ConnectionStrings": {
+        "DefaultConnection": "<YourconnectionString>"
+    }
+}
+######
