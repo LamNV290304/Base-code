@@ -9,8 +9,9 @@ namespace SEP490.Domain.Logging
 {
     public class LogError
     {
-        public BigInteger Id { get; set; }
+        public long Id { get; set; }
         public string LogContent { get; set; } = null!;
+        public string? PositionError { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public Guid? ObjectGuid { get; set; }
         public Guid? UserId { get; set; }

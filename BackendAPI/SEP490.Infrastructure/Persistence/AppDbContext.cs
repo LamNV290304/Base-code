@@ -19,7 +19,10 @@ namespace SEP490.Infrastructure.Persistence
         /// Logging config
         /// !!!WARNING
         /// </summary>
-
+        public DbSet<LogError> LogErrors => Set<LogError>();
+        public DbSet<LogActivity> LogActivities => Set<LogActivity>();
+        public DbSet<LogHistory> LogHistories => Set<LogHistory>();
+        public DbSet<LogLogin> LogLogins => Set<LogLogin>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

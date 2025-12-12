@@ -9,9 +9,9 @@ namespace SEP490.Domain.Logging
 {
     public class LogLogin
     {
-        public BigInteger Id { get; set; }
+        public long Id { get; set; }
         public Guid UserId { get; set; }
-        public DateTime LoginAt { get; set; } = DateTime.UtcNow;
-        public DateTime LogoutAt { get; set; } = DateTime.UtcNow;
+        public DateTime LoginAt { get; set; }
+        public DateTime LogoutAt { get; set; }
     }
 }

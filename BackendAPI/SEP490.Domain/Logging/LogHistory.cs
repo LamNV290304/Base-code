@@ -9,10 +9,10 @@ namespace SEP490.Domain.Logging
 {
     public class LogHistory
     {
-        public BigInteger Id { get; set; }
+        public long Id { get; set; }
         public string LogContent { get; set; } = null!;
         public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
-        public Guid ObjectGuid { get; set; }
-        public Guid UserId { get; set; }
+        public Guid? ObjectGuid { get; set; }
+        public Guid? UserId { get; set; }
     }
 }

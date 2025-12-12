@@ -1,7 +1,7 @@
 ﻿
 namespace SEP490.Infrastructure.Persistence.Configurations
 {
-    internal class LogActivityConfiguration : IEntityTypeConfiguration<LogActivity>
+    public class LogActivityConfiguration : IEntityTypeConfiguration<LogActivity>
     {
         public void Configure(EntityTypeBuilder<LogActivity> builder)
         {

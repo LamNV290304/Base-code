@@ -1,16 +1,18 @@
 # SEP490 BACKEND:
-Technology: .Net 8.0
+Enviroment: .Net 8.0
 Database: MySQL 8.0.36 Debian
 
 ## Code First:
-- Create Migration:
--> dotnet ef migrations add <NameMigrations> --startup-project ../SEP490.API -o Migrations
+- Create Migration: 
+Turn on terminal in Infrastructure
+-> dotnet ef migrations add <NameMigrations> -o Migrations
 
 - Apply Migration:
 -> dotnet ef database update --startup-project
 
 ##### !Focus
-User entity is example, do not remove BaseEntity and Logging package
+User entity is example, do not remove BaseEntity and Logging package.
+Do not remove any Log file.
 
 ## Explain Layers:
 - Get appsetting.json from non-git source. See last file to know what must be fill.

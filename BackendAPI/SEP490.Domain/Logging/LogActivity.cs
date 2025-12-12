@@ -9,7 +9,7 @@ namespace SEP490.Domain.Logging
 {
     public class LogActivity
     {
-        public BigInteger Id { get; set; }
+        public long Id { get; set; }
         public string LogContent { get; set; } = null!;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public Guid? ObjectGuid { get; set; }
