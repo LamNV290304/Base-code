@@ -3,12 +3,13 @@ Enviroment: .Net 8.0
 Database: MySQL 8.0.36 Debian
 
 ## Code First:
+Turn on terminal in Infrastructure:
+
 - Create Migration: 
-Turn on terminal in Infrastructure
 -> dotnet ef migrations add <NameMigrations> -o Migrations
 
 - Apply Migration:
--> dotnet ef database update --startup-project
+-> dotnet ef database update
 
 ##### !Focus
 User entity is example, do not remove BaseEntity and Logging package.
