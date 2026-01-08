@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SEP490.Application.Common;
 using System.Reflection;
 
 namespace SEP490.Application
@@ -14,6 +15,7 @@ namespace SEP490.Application
                 cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
 
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
 
 

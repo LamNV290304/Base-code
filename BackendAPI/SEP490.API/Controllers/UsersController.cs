@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ErrorOr;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SEP490.API.Requests;
 using SEP490.Application.Users.Commands;
@@ -17,29 +18,64 @@ namespace SEP490.API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var result = await _mediator.Send(new GetUserQuery(id));
-            return result.Match(Ok, err => Problem(err.First().Description));
+            return result.Match(
+                Ok,
+                errors => errors.First().Type switch
+                {
+                    ErrorType.NotFound => NotFound(errors.First().Description),
+                    ErrorType.Validation => BadRequest(errors),
+                    ErrorType.Conflict => Conflict(errors.First().Description),
+                    _ => Problem(errors.First().Description)
+                }
+            );
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserCommand command)
         {
             var result = await _mediator.Send(command);
-            return result.Match(res => CreatedAtAction(nameof(Get), new { id = res.Id }, res),
-                                err => Problem(err.First().Description));
+            return result.Match(
+                Ok,
+                errors => errors.First().Type switch
+                {
+                    ErrorType.NotFound => NotFound(errors.First().Description),
+                    ErrorType.Validation => BadRequest(errors),
+                    ErrorType.Conflict => Conflict(errors.First().Description),
+                    _ => Problem(errors.First().Description)
+                }
+            );
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateUserRequest request)
         {
             var result = await _mediator.Send(new UpdateUserCommand(id, request.FullName, request.Email));
-            return result.Match(Ok, err => Problem(err.First().Description));
+            return result.Match(
+                Ok,
+                errors => errors.First().Type switch
+                {
+                    ErrorType.NotFound => NotFound(errors.First().Description),
+                    ErrorType.Validation => BadRequest(errors),
+                    ErrorType.Conflict => Conflict(errors.First().Description),
+                    _ => Problem(errors.First().Description)
+                }
+            );
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _mediator.Send(new DeleteUserCommand(id));
-            return result.Match<IActionResult>(_ => NoContent(), err => Problem(err.First().Description));
+            return result.Match<IActionResult>(
+                _ => NoContent(),
+                errors => errors.First().Type switch
+                {
+                    ErrorType.NotFound => NotFound(errors.First().Description),
+                    ErrorType.Validation => BadRequest(errors),
+                    ErrorType.Conflict => Conflict(errors.First().Description),
+                    _ => Problem(errors.First().Description)
+                }
+            );
         }
     }
 }

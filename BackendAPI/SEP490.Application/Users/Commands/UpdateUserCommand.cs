@@ -26,4 +26,18 @@ namespace SEP490.Application.Users.Commands
             return user.ToDto();
         }
     }
+
+    public class UpdateUserCommandValidator : AbstractValidator<CreateUserCommand>
+    {
+        public UpdateUserCommandValidator()
+        {
+            RuleFor(x => x.FullName)
+                .NotEmpty().WithMessage("Not empty")
+                .MaximumLength(100).WithMessage("Name have max length is 100.");
+
+            RuleFor(x => x.Email)
+                .NotEmpty().WithMessage("Not empty")
+                .EmailAddress().WithMessage("Email is invalid.");
+        }
+    }
 }
