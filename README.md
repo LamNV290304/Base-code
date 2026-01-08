@@ -11,6 +11,8 @@ Turn on terminal in Infrastructure:
 - Apply Migration:
 -> dotnet ef database update
 
+If have error run this command: dotnet tool install --global dotnet-ef --version <Version number>
+
 ##### !Focus
 User entity is example, do not remove BaseEntity and Logging package.
 Do not remove any Log file.
