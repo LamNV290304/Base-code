@@ -9,7 +9,14 @@ namespace SEP490.Application
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly));
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
+
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            });
+
+
 
             services.AddValidatorsFromAssembly(typeof(AssemblyReference).Assembly);
         }
