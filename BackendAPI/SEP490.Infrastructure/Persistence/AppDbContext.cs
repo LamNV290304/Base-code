@@ -30,6 +30,27 @@ namespace SEP490.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Property(nameof(BaseEntity.CreatedAt))
+                        .HasColumnType("timestamp")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Property(nameof(BaseEntity.UpdatedAt))
+                        .HasColumnType("timestamp")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Property(nameof(BaseEntity.IsDeleted))
+                        .HasDefaultValue(false);
+                }
+            }
         }
     }
 }

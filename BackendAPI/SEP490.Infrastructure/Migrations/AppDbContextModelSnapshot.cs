@@ -31,7 +31,9 @@ namespace SEP490.Infrastructure.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -47,10 +49,16 @@ namespace SEP490.Infrastructure.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("UpdatedAt"));
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("longtext");
@@ -105,7 +113,6 @@ namespace SEP490.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("PositionError")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid?>("UserId")
@@ -128,13 +135,13 @@ namespace SEP490.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("ObjectGuid")
+                    b.Property<Guid?>("ObjectGuid")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");

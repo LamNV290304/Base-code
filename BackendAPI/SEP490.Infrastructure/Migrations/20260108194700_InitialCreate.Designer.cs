@@ -12,8 +12,8 @@ using SEP490.Infrastructure.Persistence;
 namespace SEP490.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251211082330_LoggingTable")]
-    partial class LoggingTable
+    [Migration("20260108194700_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,9 @@ namespace SEP490.Infrastructure.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
@@ -50,10 +52,16 @@ namespace SEP490.Infrastructure.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime?>("UpdatedAt"));
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("longtext");
@@ -107,6 +115,9 @@ namespace SEP490.Infrastructure.Migrations
                     b.Property<Guid?>("ObjectGuid")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("PositionError")
+                        .HasColumnType("longtext");
+
                     b.Property<Guid?>("UserId")
                         .HasColumnType("char(36)");
 
@@ -127,13 +138,13 @@ namespace SEP490.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("ObjectGuid")
+                    b.Property<Guid?>("ObjectGuid")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
