@@ -7,7 +7,7 @@ Turn on terminal in Infrastructure:
 
 - Create Migration: 
 -> dotnet ef migrations add <NameMigrations> -o Migrations
--> dotnet ef migrations add InitialCreate -o Migrations
+
 - Apply Migration:
 -> dotnet ef database update
 
@@ -72,3 +72,10 @@ Do not remove any Log file.
     }
 }
 ######
+
+###### Library in project:
+- ErrorOr
+- FluentValidation
+- MediaR
+- EntityFrameworkCore
+- Pomelo MySQL
