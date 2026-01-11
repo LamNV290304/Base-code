@@ -6,12 +6,26 @@ namespace SEP490.Infrastructure.Repositories
     public class EfRepository<T> : IRepository<T> where T : class
     {
         private readonly AppDbContext _ctx;
-        public EfRepository(AppDbContext ctx) => _ctx = ctx;
+        private readonly ILoggingService _loggingService;
+
+        public EfRepository(AppDbContext ctx, ILoggingService loggingService)
+        {
+            _ctx = ctx;
+            _loggingService = loggingService;
+        }
 
         public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
         {
-            await _ctx.Set<T>().AddAsync(entity, cancellationToken);
-            await _ctx.SaveChangesAsync(cancellationToken);
+            try
+            {
+                await _ctx.Set<T>().AddAsync(entity, cancellationToken);
+                await _ctx.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                await _loggingService.LogErrorAsync($"Error adding entity of type {typeof(T).Name}: {ex.Message}", "AddAsync");
+                throw;
+            }
         }
 
         public async Task<T?> GetAsync(int id, CancellationToken cancellationToken = default)
