@@ -55,6 +55,20 @@ namespace SEP490.Infrastructure.Repositories
             }
         }
 
+        public async Task SoftDeleteAsync(T entity, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _ctx.Set<T>().Update(entity);
+                await _ctx.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                await _loggingService.LogErrorAsync($"Error updating entity of type {typeof(T).Name}: {ex.Message}", "SoftDeleteAsync");
+                throw;
+            }
+        }
+
         public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
         {
             try 
