@@ -30,21 +30,58 @@ namespace SEP490.Infrastructure.Repositories
 
         public async Task<T?> GetAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _ctx.Set<T>().FindAsync(new object[] { id }, cancellationToken);
+            try 
+            {
+                return await _ctx.Set<T>().FindAsync(new object[] { id }, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                await _loggingService.LogErrorAsync($"Error retrieving entity of type {typeof(T).Name} with ID {id}: {ex.Message}", "GetAsync");
+                throw;
+            }
         }
 
         public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            _ctx.Set<T>().Update(entity);
-            await _ctx.SaveChangesAsync(cancellationToken);
+            try 
+            {
+                _ctx.Set<T>().Update(entity);
+                await _ctx.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                await _loggingService.LogErrorAsync($"Error updating entity of type {typeof(T).Name}: {ex.Message}", "UpdateAsync");
+                throw;
+            }
         }
 
         public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
         {
+            try 
+            {
+                _ctx.Set<T>().Remove(entity);
+                await _ctx.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                await _loggingService.LogErrorAsync($"Error deleting entity of type {typeof(T).Name}: {ex.Message}", "DeleteAsync");
+                throw;
+            }
             _ctx.Set<T>().Remove(entity);
             await _ctx.SaveChangesAsync(cancellationToken);
         }
 
-        public IQueryable<T> Query() => _ctx.Set<T>();
+        public IQueryable<T> Query()
+        {
+            try 
+            {
+                return _ctx.Set<T>();
+            }
+            catch (Exception ex)
+            {
+                _loggingService.LogErrorAsync($"Error querying entities of type {typeof(T).Name}: {ex.Message}", "Query").Wait();
+                throw;
+            }
+        }
     }
 }
