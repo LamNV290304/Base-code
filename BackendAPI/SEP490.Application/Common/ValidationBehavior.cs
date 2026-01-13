@@ -11,7 +11,6 @@ namespace SEP490.Application.Common
     where TResponse : IErrorOr
     {
         private readonly IValidator<TRequest>? _validator;
-
         public ValidationBehavior(IValidator<TRequest>? validator = null)
         {
             _validator = validator;

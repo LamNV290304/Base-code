@@ -18,8 +18,6 @@ namespace SEP490.Application
                 cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
 
-
-
             services.AddValidatorsFromAssembly(typeof(AssemblyReference).Assembly);
         }
     }
