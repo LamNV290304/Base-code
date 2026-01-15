@@ -15,6 +15,12 @@ namespace SEP490.Application.Interfaces
             Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
             Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
             IQueryable<T> Query();
+
+            Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(
+                int pageIndex,
+                int pageSize,
+                IQueryable<T>? query = null,
+                CancellationToken cancellationToken = default);
         }
     }
 }

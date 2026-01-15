@@ -97,5 +97,33 @@ namespace SEP490.Infrastructure.Repositories
                 throw;
             }
         }
+
+        public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(
+    int pageIndex,
+    int pageSize,
+    IQueryable<T>? query = null,
+    CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var source = query ?? _ctx.Set<T>();
+
+                var totalCount = await source.CountAsync(cancellationToken);
+
+                var items = await source
+                    .Skip((pageIndex - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync(cancellationToken);
+
+                return (items, totalCount);
+            }
+            catch (Exception ex)
+            {
+                await _loggingService.LogErrorAsync(
+                    $"Error retrieving paged list of type {typeof(T).Name}: {ex.Message}",
+                    "GetPagedAsync");
+                throw;
+            }
+        }
     }
 }
