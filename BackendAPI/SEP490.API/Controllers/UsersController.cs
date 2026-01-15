@@ -37,7 +37,23 @@ namespace SEP490.API.Controllers
             );
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
 
+            var result = await _mediator.Send(new GetUsersQuery());
+
+            return result.Match(
+                response => Ok(response),
+                errors => errors.First().Type switch
+                {
+                    ErrorType.NotFound => NotFound(errors.First().Description),
+                    ErrorType.Validation => BadRequest(errors),
+                    ErrorType.Conflict => Conflict(errors.First().Description),
+                    _ => Problem(errors.First().Description)
+                }
+            );
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
