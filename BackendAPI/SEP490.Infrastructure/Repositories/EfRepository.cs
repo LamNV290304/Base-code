@@ -85,7 +85,7 @@ namespace SEP490.Infrastructure.Repositories
             await _ctx.SaveChangesAsync(cancellationToken);
         }
 
-        public IQueryable<T> Query()
+        public  IQueryable<T> Query()
         {
             try 
             {
@@ -99,10 +99,10 @@ namespace SEP490.Infrastructure.Repositories
         }
 
         public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(
-    int pageIndex,
-    int pageSize,
-    IQueryable<T>? query = null,
-    CancellationToken cancellationToken = default)
+                int pageIndex,
+                int pageSize,
+                IQueryable<T>? query = null,
+                CancellationToken cancellationToken = default)
         {
             try
             {

@@ -9,17 +9,17 @@ namespace SEP490.Application.Users.Queries
 {
     public record UserPagedResponse(IEnumerable<UserDto> Items, int TotalCount);
 
-    public record GetUsersQuery(string? SearchTerm, int PageIndex, int PageSize)
+    public record GetUsersPagingQuery(string? SearchTerm, int PageIndex, int PageSize)
         : IRequest<ErrorOr<UserPagedResponse>>;
 
-    public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, ErrorOr<UserPagedResponse>>
+    public class GetUsersPagingQueryHandler : IRequestHandler<GetUsersPagingQuery, ErrorOr<UserPagedResponse>>
     {
         private readonly IRepository<User> _repository;
 
-        public GetUsersQueryHandler(IRepository<User> repository)
+        public GetUsersPagingQueryHandler(IRepository<User> repository)
             => _repository = repository;
 
-        public async Task<ErrorOr<UserPagedResponse>> Handle(GetUsersQuery request, CancellationToken ct)
+        public async Task<ErrorOr<UserPagedResponse>> Handle(GetUsersPagingQuery request, CancellationToken ct)
         {
             var query = _repository.Query();
 
