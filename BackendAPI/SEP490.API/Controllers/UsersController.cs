@@ -21,16 +21,13 @@ namespace SEP490.API.Controllers
             [FromQuery] int pageSize = 10,
             CancellationToken ct = default)
         {
-            // Tạo query từ các tham số nhận được
             var query = new GetUsersQuery(searchTerm, pageIndex, pageSize);
 
-            // Gửi query đến Handler xử lý thông qua MediatR
             var result = await _mediator.Send(query, ct);
 
-            // Xử lý kết quả trả về từ ErrorOr
             return result.Match(
-                response => Ok(response), // Trả về 200 OK kèm theo UserPagedResponse (Items và TotalCount)
-                errors => Problem(errors.First().Description) // Xử lý lỗi nếu có
+                response => Ok(response),
+                errors => Problem(errors.First().Description)
             );
         }
 
