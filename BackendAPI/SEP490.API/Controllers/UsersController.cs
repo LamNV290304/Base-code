@@ -27,7 +27,13 @@ namespace SEP490.API.Controllers
 
             return result.Match(
                 response => Ok(response),
-                errors => Problem(errors.First().Description)
+                errors => errors.First().Type switch
+                {
+                    ErrorType.NotFound => NotFound(errors.First().Description),
+                    ErrorType.Validation => BadRequest(errors),
+                    ErrorType.Conflict => Conflict(errors.First().Description),
+                    _ => Problem(errors.First().Description)
+                }
             );
         }
 
