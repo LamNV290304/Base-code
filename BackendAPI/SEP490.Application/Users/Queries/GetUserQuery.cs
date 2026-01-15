@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using static SEP490.Application.Interfaces.IRepository;
 
 namespace SEP490.Application.Users.Queries
@@ -23,18 +19,23 @@ namespace SEP490.Application.Users.Queries
 
     }
 
-    public class GetUsersQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<UserDto>>
+    public record GetUsersQuery() : IRequest<ErrorOr<IEnumerable<UserDto>>>;
+    public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, ErrorOr<IEnumerable<UserDto>>>
     {
         private readonly IRepository<User> _repository;
         public GetUsersQueryHandler(IRepository<User> repository) => _repository = repository;
 
-        public async Task<ErrorOr<UserDto>> Handle(GetUserQuery request, CancellationToken ct)
+        public async Task<ErrorOr<IEnumerable<UserDto>>> Handle(GetUsersQuery request, CancellationToken ct)
         {
-            var user = _repository.Query();
-            if (user is null) return Error.NotFound("User.NotFound");
+            var query = _repository.Query();
 
-            return user.ToDto();
+            query = query.Where(u => !u.IsDeleted);
+
+            query = query.OrderByDescending(u => u.CreatedAt);
+
+            var users = query.Select(u => u.ToDto()).ToList();
+
+            return await Task.FromResult<ErrorOr<IEnumerable<UserDto>>>(users);
         }
-
     }
 }

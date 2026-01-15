@@ -21,7 +21,7 @@ namespace SEP490.API.Controllers
             [FromQuery] int pageSize = 10,
             CancellationToken ct = default)
         {
-            var query = new GetUsersQuery(searchTerm, pageIndex, pageSize);
+            var query = new GetUsersPagingQuery(searchTerm, pageIndex, pageSize);
 
             var result = await _mediator.Send(query, ct);
 
@@ -36,6 +36,8 @@ namespace SEP490.API.Controllers
                 }
             );
         }
+
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
