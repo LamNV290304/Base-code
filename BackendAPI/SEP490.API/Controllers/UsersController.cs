@@ -14,6 +14,26 @@ namespace SEP490.API.Controllers
         private readonly ISender _mediator;
         public UsersController(ISender mediator) => _mediator = mediator;
 
+        [HttpGet]
+        public async Task<IActionResult> GetUsers(
+            [FromQuery] string? searchTerm,
+            [FromQuery] int pageIndex = 1,
+            [FromQuery] int pageSize = 10,
+            CancellationToken ct = default)
+        {
+            // Tạo query từ các tham số nhận được
+            var query = new GetUsersQuery(searchTerm, pageIndex, pageSize);
+
+            // Gửi query đến Handler xử lý thông qua MediatR
+            var result = await _mediator.Send(query, ct);
+
+            // Xử lý kết quả trả về từ ErrorOr
+            return result.Match(
+                response => Ok(response), // Trả về 200 OK kèm theo UserPagedResponse (Items và TotalCount)
+                errors => Problem(errors.First().Description) // Xử lý lỗi nếu có
+            );
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
