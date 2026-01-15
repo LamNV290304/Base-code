@@ -7,19 +7,17 @@ using static SEP490.Application.Interfaces.IRepository;
 
 namespace SEP490.Application.Users.Queries
 {
-    public record GetUserQuery(int Id) : IRequest<ErrorOr<UserDto>>;
-    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<UserDto>>
+    public record UserPagedResponse(IEnumerable<UserDto> Items, int TotalCount);
+
+    public record GetUsersQuery(string? SearchTerm, int PageIndex, int PageSize)
+        : IRequest<ErrorOr<UserPagedResponse>>;
+
+    public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, ErrorOr<UserPagedResponse>>
     {
         private readonly IRepository<User> _repository;
-        public GetUserQueryHandler(IRepository<User> repository) => _repository = repository;
 
-        public async Task<ErrorOr<UserDto>> Handle(GetUserQuery request, CancellationToken ct)
-        {
-            var user = await _repository.GetAsync(request.Id, ct);
-            if (user is null || user.IsDeleted) return Error.NotFound("User.NotFound");
-
-            return user.ToDto();
-        }
+        public GetUsersQueryHandler(IRepository<User> repository)
+            => _repository = repository;
 
         public async Task<ErrorOr<UserPagedResponse>> Handle(GetUsersQuery request, CancellationToken ct)
         {
