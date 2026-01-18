@@ -33,7 +33,6 @@ namespace SEP490.API
 
             app.UseRateLimiter();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
