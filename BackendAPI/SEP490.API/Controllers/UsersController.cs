@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using SEP490.API.Requests;
 using SEP490.Application.Users.Commands;
 using SEP490.Application.Users.Queries;
@@ -9,6 +10,7 @@ namespace SEP490.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting("fixed")]
     public class UsersController : ControllerBase
     {
         private readonly ISender _mediator;
