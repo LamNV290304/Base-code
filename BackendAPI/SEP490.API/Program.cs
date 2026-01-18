@@ -1,4 +1,7 @@
-﻿namespace SEP490.API
+﻿using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
+
+namespace SEP490.API
 {
     public class Program
     {
@@ -25,12 +28,13 @@
             // Add services to the container.
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
-
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseRateLimiter();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
