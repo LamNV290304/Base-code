@@ -29,6 +29,7 @@ namespace SEP490.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
             var app = builder.Build();
 
             app.UseRateLimiter();
