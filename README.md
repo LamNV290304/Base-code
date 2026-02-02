@@ -8,6 +8,8 @@ Turn on terminal in Infrastructure:
 - Create Migration: 
 -> dotnet ef migrations add <NameMigrations> -o Migrations
 
+eg: dotnet ef migrations add InitialCreate -o Migrations
+
 - Apply Migration:
 -> dotnet ef database update
 
