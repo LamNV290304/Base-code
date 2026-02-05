@@ -19,9 +19,7 @@ namespace SEP490.Application.Common
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)
         {
             if (_validator is null) return await next();
-
             var validationResult = await _validator.ValidateAsync(request, ct);
-
             if (validationResult.IsValid) return await next();
 
             var errors = validationResult.Errors
